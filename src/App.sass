@@ -1,0 +1,41 @@
+
+@import "assets/_variables"
+
+.app
+  text-align: center
+
+  &-header
+    top: 0
+    z-index: 2
+    width: 100%
+    display: flex
+    position: fixed
+    min-height: 4em
+    flex-direction: row
+    align-items: center
+    padding: 0.1em 0.1em
+    justify-content: center
+    background-color: $THEME
+    #left
+      flex: 1
+    #center
+      flex: 5
+      text-align: center
+      color: $WHITE
+      justify-content: center
+    #right
+      flex: 1
+
+  &-body
+    background-color: $BLACK
+    min-height: 100%
+    overflow: hidden
+    margin-top: 4em
+    padding: 1vmin
+    height: -moz-available
+    height: -webkit-fill-available
+    // background-color: $BACKGROUND_GREY
+
+  .kairos-logo
+    height: 1vmax
+    pointer-events: none

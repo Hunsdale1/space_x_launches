@@ -1,0 +1,47 @@
+@import '../../../assets/_variables'
+
+.tile
+  margin: 0.5em
+  display: flex
+  flex-direction: column
+  flex-basis: 350px
+  border-radius: 3px
+  background-color: $WHITE
+  animation: fadeIn 1s ease-in both
+
+  &-title
+    margin: 0
+    color: $WHITE
+    padding: 0.5em
+    font-weight: 700
+    font-style: italic
+    border-radius: 3px 3px 0px 0px
+    font-family: Barlow,sans-serif
+    background-color: #ef622c
+
+  &-details
+    flex: 1
+    display: flex
+    padding: 1em
+    flex-direction: column
+    justify-content: space-between
+
+    .detail
+      width: 100%
+      font-size: 0.9em
+      font-style: italic
+      color: lighten($TEXT_GREY, 20%)
+    p
+      font-style: normal
+      margin-top: 0
+      color: $TEXT_GREY
+      font-size: 1em
+
+@keyframes fadeIn
+  from
+    opacity: 0
+    transform: translate3d(0, -2%, 0)
+
+  to
+    opacity: 1
+    transform: translate3d(0, 0, 0)

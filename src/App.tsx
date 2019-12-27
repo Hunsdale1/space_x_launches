@@ -1,26 +1,29 @@
-import './App.css'
-import './index.css'
+import './App.sass'
 import React from 'react'
 import client from './apolloClient'
 import { ApolloProvider } from '@apollo/react-hooks'
-import CountriesList from './components/CountriesList'
+import LaunchesList from './components/LaunchesList'
 
 function App() {
   return (
     <ApolloProvider client={client}>
-      <div className='App'>
-        <header className='App-header'>
-          <img src={'https://www.kairostech.io/img/logo.svg'} className='kairos-logo' alt='kairos-logo' />
+      <div className={'app'}>
+        <header className={'app-header'}>
+          <span id={'left'}>
+            <img src={'https://www.kairostech.io/img/logo.svg'} className='kairos-logo' alt='kairos-logo' />
+          </span>
+
+          <span id={'center'}>
+            <h3>SpaceX Launches</h3>
+          </span>
+          <span id={'right'} />
         </header>
-        <body>
-          <CountriesList />
-        </body>
-        <footer></footer>
+        <div className={'app-body'}>
+          <LaunchesList />
+        </div>
       </div>
     </ApolloProvider>
   )
 }
 
 export default App
-
-//"apollo:generate": "apollo client:codegen --target=typescript --excludes=node_modules/* --includes=**/*.tsx --endpoint=https://countries.trevorblades.com/ --tagName=gql --outputFlat src/generated"

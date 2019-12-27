@@ -1,4 +1,4 @@
-import './index.css'
+import './index.sass'
 import App from './App'
 import React from 'react'
 import { render } from 'react-dom'
