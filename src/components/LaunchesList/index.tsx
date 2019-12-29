@@ -27,7 +27,8 @@ const LaunchesList = () => {
     if (!queryResultsRemaining) return
 
     const { scrollTop, scrollHeight, offsetHeight } = event.target as HTMLInputElement
-    if (scrollTop < scrollHeight - offsetHeight) return
+
+    if (scrollTop + 20 < scrollHeight - offsetHeight) return
 
     const { fetchMore } = query
 
@@ -52,6 +53,7 @@ const LaunchesList = () => {
   return (
     <div
       className={'tiles'}
+      data-testid={'tiles'}
       onScroll={e => {
         e.persist()
         onScroll(e)
