@@ -8,14 +8,15 @@
     top: 0
     z-index: 2
     width: 100%
+    height: 4em
     display: flex
     position: fixed
-    min-height: 4em
     flex-direction: row
     align-items: center
     padding: 0.1em 0.1em
     justify-content: center
     background-color: $THEME
+
     #left
       flex: 1
     #center
@@ -27,14 +28,16 @@
       flex: 1
 
   &-body
-    background-color: $BLACK
-    min-height: 100%
-    overflow: hidden
-    margin-top: 4em
+    top: 4em
+    left: 0
+    right: 0
+    bottom: 0
+    display: flex
     padding: 1vmin
-    height: -moz-available
-    height: -webkit-fill-available
-    // background-color: $BACKGROUND_GREY
+    position: fixed
+    align-items: center
+    justify-content: center
+    background-color: $BACKGROUND_GREY
 
   .kairos-logo
     height: 1vmax

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import './style'
+import './style.sass'
 
-const Loading = ({ loading }: { loading: boolean }) => (loading ? <div className={'loading'}>Loading ...</div> : <></>)
+const Loading = ({ loading }: { loading: boolean }) => <div className={loading ? 'loading' : 'loading hidden'}>Loading</div>
 
 export default Loading

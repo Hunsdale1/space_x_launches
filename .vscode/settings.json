@@ -9,5 +9,8 @@
   "prettier.singleQuote": true,
   "prettier.jsxSingleQuote": true,
   "prettier.jsxBracketSameLine": true,
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "cSpell.words": [
+    "kairos"
+  ]
 }

@@ -3,9 +3,10 @@
 .tile
   margin: 0.5em
   display: flex
-  flex-direction: column
+  max-width: 750px
   flex-basis: 350px
   border-radius: 3px
+  flex-direction: column
   background-color: $WHITE
   animation: fadeIn 1s ease-in both
 
@@ -21,16 +22,17 @@
 
   &-details
     flex: 1
-    display: flex
     padding: 1em
+    display: flex
     flex-direction: column
     justify-content: space-between
 
     .detail
       width: 100%
+      padding: 0.5em
       font-size: 0.9em
       font-style: italic
-      color: lighten($TEXT_GREY, 20%)
+      color: lighten($TEXT_GREY, 15%)
     p
       font-style: normal
       margin-top: 0

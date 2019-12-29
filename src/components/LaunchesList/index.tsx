@@ -1,74 +1,62 @@
-import React, { useState, useEffect, useRef, HTMLAttributes } from 'react'
 import Error from './Error'
-import gql from 'graphql-tag'
 import Loading from './Loading'
 import LaunchTile from './LaunchTile'
-import { IQuery, ILaunchesPastResponse } from '../../typings'
+import debounce from 'lodash.debounce'
+import React, { useState } from 'react'
 import { useQuery } from '@apollo/react-hooks'
+import { IGraphQLResponse } from '../../typings'
+import { ILaunchesPastResponse } from '../../typings'
+import { SPACE_X_LAUNCHES_QUERY } from '../../graphQL/queries'
+import { DEBOUNCE_TIME, FETCH_LIMIT } from '../../utils/constants'
 
 import './style.sass'
-import { ApolloQueryResult } from 'apollo-boost'
-
-const SPACE_X_LAUNCHES_QUERY = gql`
-  query spaceXLaunchesQuery($offset: Int, $limit: Int) {
-    launchesPast(limit: $limit, offset: $offset, sort: "launch_date_utc asc") {
-      id
-      mission_name
-      launch_date_utc
-      launch_site {
-        site_name_long
-      }
-      links {
-        article_link
-        flickr_images
-      }
-      rocket {
-        rocket_name
-      }
-      details
-    }
-  }
-`
 
 const LaunchesList = () => {
-  const [limit, setLimit] = useState(10)
-  const [offset, setOffset] = useState(0)
-  const scrollViewRef = useRef<HTMLDivElement>(null)
+  const query = useQuery<IGraphQLResponse>(SPACE_X_LAUNCHES_QUERY, {
+    variables: { limit: FETCH_LIMIT },
+    fetchPolicy: 'cache-and-network',
+    notifyOnNetworkStatusChange: false
+  })
 
-  const query = useQuery(SPACE_X_LAUNCHES_QUERY, { variables: { offset, limit }, fetchPolicy: 'cache-and-network' })
+  const [queryResultsRemaining, setQueryResultsRemaining] = useState(true)
 
-  // useEffect(() => {
-  //   debugger
-  //   scrollViewRef.current?.addEventListener('scroll', (ev: Event) => {
-  //     debugger
+  const onScroll = debounce((event: React.UIEvent<HTMLDivElement>) => {
+    const { loading } = query
 
-  //     if (scrollViewRef.current!.scrollTop + scrollViewRef.current?.clientHeight! >= scrollViewRef.current?.scrollHeight!) {
-  //       setLimit(limit + 10)
-  //       setOffset(offset + 10)
-  //       query.refetch({ offset, limit }).then((value: ApolloQueryResult<any>) => {
-  //         console.info(value)
-  //         debugger
-  //       })
-  //     }
-  //   })
-  //   return () => {}
-  // }, [limit, offset, query])
+    if (loading) return
+    if (!queryResultsRemaining) return
 
-  const onScroll = (event: React.UIEvent<HTMLDivElement>) => {
-    console.info(event)
-    debugger
-  }
+    const { scrollTop, scrollHeight, offsetHeight } = event.target as HTMLInputElement
+    if (scrollTop < scrollHeight - offsetHeight) return
+
+    const { fetchMore } = query
+
+    fetchMore({
+      variables: { offset: data!.launchesPast.length },
+      updateQuery: (prev: any, { fetchMoreResult }) => {
+        console.info(fetchMoreResult)
+
+        if (!fetchMoreResult) return prev
+        if (!fetchMoreResult || fetchMoreResult?.launchesPast.length < FETCH_LIMIT) setQueryResultsRemaining(false)
+
+        return Object.assign({}, prev, { launchesPast: [...prev.launchesPast, ...fetchMoreResult.launchesPast] })
+      }
+    })
+  }, DEBOUNCE_TIME)
 
   const { loading, error, data } = query
 
-  debugger
-
   if (error) return <Error error={error} />
-  if (loading && !data) return <p>Loading ... </p>
+  if (loading && !data) return <Loading loading={loading} />
 
   return (
-    <div className={'tiles'} ref={scrollViewRef} onScroll={onScroll}>
-      {data.launchesPast.map((launch: ILaunchesPastResponse, idx: number) => (
+    <div
+      className={'tiles'}
+      onScroll={e => {
+        e.persist()
+        onScroll(e)
+      }}>
+      {data!.launchesPast.map((launch: ILaunchesPastResponse, idx: number) => (
         <LaunchTile key={idx} launch={launch} />
       ))}
 

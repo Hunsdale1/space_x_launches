@@ -1,2 +1,31 @@
+@import '../../../assets/_variables'
+
 .loading
-  min-height: 100%
+  bottom: 1em
+  padding: 0.75em
+  position: absolute
+  border-radius: 50px
+  border-color: $TEXT_GREY
+  background-color: $WHITE
+  color: lighten($TEXT_GREY, 30%)
+  box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.2)
+  -moz-box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.2)
+  -webkit-box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.2)
+  animation-name: fade-in
+  animation-duration: 0.5s
+  &.hidden
+    opacity: 0
+    animation-name: fade-out
+    animation-duration: 0.5s
+
+@keyframes fade-in
+  0%
+    opacity: 0
+  100%
+    opacity: 1
+
+@keyframes fade-out
+  0%
+    opacity: 1
+  100%
+    opacity: 0

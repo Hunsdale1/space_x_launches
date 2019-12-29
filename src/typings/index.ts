@@ -15,9 +15,6 @@ export interface ILaunchesPastResponse {
   details: string
 }
 
-export interface IQuery {
-  sort: string
-  limit: number
-  order: string
-  offset: number
+export interface IGraphQLResponse {
+  launchesPast: ILaunchesPastResponse[]
 }
