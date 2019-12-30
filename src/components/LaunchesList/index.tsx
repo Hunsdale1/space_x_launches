@@ -1,13 +1,13 @@
 import Error from './Error'
 import Loading from './Loading'
 import LaunchTile from './LaunchTile'
-import debounce from 'lodash.debounce'
+import throttle from 'lodash.throttle'
 import React, { useState } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { IGraphQLResponse } from '../../typings'
 import { ILaunchesPastResponse } from '../../typings'
 import { SPACE_X_LAUNCHES_QUERY } from '../../graphQL/queries'
-import { DEBOUNCE_TIME, FETCH_LIMIT } from '../../utils/constants'
+import { THROTTLE_TIME, FETCH_LIMIT, TEST_IDS } from '../../utils/constants'
 
 import './style.sass'
 
@@ -20,7 +20,7 @@ const LaunchesList = () => {
 
   const [queryResultsRemaining, setQueryResultsRemaining] = useState(true)
 
-  const onScroll = debounce((event: React.UIEvent<HTMLDivElement>) => {
+  const onScroll = throttle((event: React.UIEvent<HTMLDivElement>) => {
     const { loading } = query
 
     if (loading) return
@@ -28,7 +28,7 @@ const LaunchesList = () => {
 
     const { scrollTop, scrollHeight, offsetHeight } = event.target as HTMLInputElement
 
-    if (scrollTop + 20 < scrollHeight - offsetHeight) return
+    if (scrollTop < scrollHeight - offsetHeight - window.innerHeight * 2) return
 
     const { fetchMore } = query
 
@@ -43,7 +43,7 @@ const LaunchesList = () => {
         return Object.assign({}, prev, { launchesPast: [...prev.launchesPast, ...fetchMoreResult.launchesPast] })
       }
     })
-  }, DEBOUNCE_TIME)
+  }, THROTTLE_TIME)
 
   const { loading, error, data } = query
 
@@ -53,7 +53,7 @@ const LaunchesList = () => {
   return (
     <div
       className={'tiles'}
-      data-testid={'tiles'}
+      data-testid={TEST_IDS.TILES}
       onScroll={e => {
         e.persist()
         onScroll(e)
