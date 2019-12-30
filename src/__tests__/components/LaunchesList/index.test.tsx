@@ -77,7 +77,7 @@ describe('<LaunchesList />', () => {
     }))
 
   it('error response renders error message', () => {
-    act(async () => {
+    act(() => {
       const { queryByTestId } = render(
         <MockedProvider addTypename={false} mocks={FAIL_MOCK}>
           <LaunchesList />
@@ -85,9 +85,7 @@ describe('<LaunchesList />', () => {
         container
       )
 
-      await wait(0)
-
-      expect(queryByTestId(TEST_IDS.ERROR)).toBeInTheDocument()
+      wait(0).then(() => expect(queryByTestId(TEST_IDS.ERROR)).toBeInTheDocument())
     })
   })
 })

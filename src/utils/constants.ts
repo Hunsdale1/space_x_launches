@@ -1,4 +1,4 @@
-export const FETCH_LIMIT = 7
+export const FETCH_LIMIT = 12
 export const THROTTLE_TIME = 100
 
 export const TEST_IDS = Object.freeze({
